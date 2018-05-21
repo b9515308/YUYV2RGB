@@ -1,2 +1,3 @@
 ffmpeg -i car.jpg -s 640x480 -pix_fmt yuyv422 yuyv422_640480_car.yuv
 ffmpeg -i car.jpg -s 640x480 -pix_fmt yuv422p yuv422p_640480_car.yuv
+resource/yuyv422_640480_car.yuv 640x480 448x448 rgb.out
