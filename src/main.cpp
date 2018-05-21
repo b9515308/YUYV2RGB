@@ -3,6 +3,7 @@
 #include <string.h>
 #include <vector>
 #include <opencv2/opencv.hpp>
+#include <yolo_lib.h>
 using namespace cv;
 
 void write_jpeg(Mat &a, const char *filename)
@@ -70,9 +71,9 @@ int main(int argc, char *argv[])
 
 	yuv422_data = malloc(f_size);
 	ret = fread(yuv422_data, 1, f_size, fp);
-	fclose(fp);
 
 	printf("read %ld bytes, error %d\n", ret, ferror (fp));
+	fclose(fp);
 
 	//Mat YUV422_Mat(height, width, CV_8UC2, yuv422_data);
 	Mat YUV422_Mat(height, width, CV_8UC2, yuv422_data);
@@ -93,8 +94,8 @@ int main(int argc, char *argv[])
 	Mat Resize_Mat(out_height,out_width,CV_8UC3,resiz_data);
 	resize(RGB24_Mat, Resize_Mat, Size(out_height,out_width));
 
-
-
+	setup_yolo_env("resource/tiny-yolo-xnor.cfg", "resource/tiny-yolo-xnor.weight");
+	yolo_inference_with_ptr(Resize_Mat.ptr(), out_width, out_height, 3, 0.2);
 
 
 #ifdef DEBUG
